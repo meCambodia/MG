@@ -8,7 +8,7 @@ setup(
 	description='Customization for Frappe Framework',
 	author='User',
 	author_email='user@example.com',
-	packages=find_packages(),
+	packages=['mg'],
 	zip_safe=False,
 	include_package_data=True,
 	install_requires=[]
