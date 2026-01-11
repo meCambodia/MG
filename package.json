@@ -1,0 +1,10 @@
+{
+  "name": "mg",
+  "version": "0.0.1",
+  "description": "MG Custom Frappe App",
+  "scripts": {
+    "build": "echo 'No build step required for this app'",
+    "production": "echo 'No production build step required'"
+  },
+  "author": "User"
+}
