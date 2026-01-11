@@ -36,10 +36,25 @@
 }
 
 body {
-    background-color: var(--background-color) !important;
+    background: url('../images/angkor_wat_bg.jpg') no-repeat center center fixed !important;
+    background-size: cover !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     color: var(--text-color) !important;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Semi-transparent overlay for better text readability */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(241, 245, 249, 0.85);
+    /* Slate 100 with opacity */
+    z-index: -1;
+    backdrop-filter: blur(5px);
 }
 
 /* --- Desk & Layout --- */
@@ -140,8 +155,10 @@ body {
 /* Cards & Containers */
 .card,
 .widget {
-    background-color: var(--surface-color) !important;
-    border: 1px solid var(--border-color) !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    /* Move to semi-transparent */
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
     border-radius: var(--border-radius-lg) !important;
     box-shadow: var(--shadow-sm) !important;
 }
