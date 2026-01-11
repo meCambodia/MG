@@ -13,5 +13,5 @@ app_include_css = "/assets/mg/css/mg.css"
 app_include_js = "/assets/mg/js/mg.js"
 
 # include js, css files in header of web template
-web_include_css = "/assets/mg/css/mg.css"
-web_include_js = "/assets/mg/js/mg.js"
+# web_include_css = "/assets/mg/css/mg.css"
+# web_include_js = "/assets/mg/js/mg.js"
