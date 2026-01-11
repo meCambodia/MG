@@ -1,0 +1,15 @@
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+*.egg-info
+__pycache__
+node_modules
+dist
+build
+site_config.json
+sites
+.vscode
+*.swp
+*.swo
+public/node_modules
