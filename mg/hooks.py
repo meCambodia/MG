@@ -1,8 +1,8 @@
 app_name = "mg"
 app_title = "MG Custom App"
-app_publisher = "User"
-app_description = "Customization for Frappe Framework"
-app_email = "user@example.com"
+app_publisher = "TKGroup"
+app_description = "Customization Frappe Framework for my startup business"
+app_email = "khenglengt@gmail.co"
 app_license = "gpl-3.0"
 
 # Includes in <head>

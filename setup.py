@@ -5,10 +5,10 @@ version = "0.0.1"
 setup(
 	name='mg',
 	version=version,
-	description='Customization for Frappe Framework',
-	author='User',
-	author_email='user@example.com',
-	packages=['mg'],
+	description='Customization Frappe Framework for my startup business',
+	author='TKGroup',
+	author_email='khenglengt@gmail.co',
+	packages=find_packages(),
 	zip_safe=False,
 	include_package_data=True,
 	install_requires=[]
