@@ -23,8 +23,139 @@ mg.init = function() {
     // Enhance tooltips
     mg.utils.enhanceTooltips();
     
-    // Add keyboard shortcuts
+    // Add keyboard shortcuts (minimal)
     mg.utils.setupKeyboardShortcuts();
+    
+    // Customize help menu immediately and on various events
+    mg.customizeHelpMenu();
+};
+
+// Customize Help Menu - More aggressive approach
+mg.customizeHelpMenu = function() {
+    // Multiple strategies to find and customize the help menu
+    
+    // Strategy 1: Direct DOM manipulation with multiple selectors
+    const customizeMenuItems = function() {
+        // Find help menu dropdown - try multiple selectors
+        let helpDropdown = null;
+        
+        // Try different selectors for help menu
+        const selectors = [
+            '.dropdown-help .dropdown-menu',
+            '.help-menu .dropdown-menu',
+            '.navbar .dropdown-menu:has(a[href*="about"])',
+            '.navbar .dropdown-menu:has(a[href*="support"])',
+            '[data-toggle="dropdown"]:contains("Help") + .dropdown-menu',
+            '.navbar-nav .dropdown-menu'
+        ];
+        
+        for (let selector of selectors) {
+            const $menu = $(selector);
+            if ($menu.length && ($menu.text().toLowerCase().includes('about') || $menu.text().toLowerCase().includes('support'))) {
+                helpDropdown = $menu;
+                break;
+            }
+        }
+        
+        // If not found, try finding by parent
+        if (!helpDropdown || helpDropdown.length === 0) {
+            $('.navbar [data-toggle="dropdown"]').each(function() {
+                const $toggle = $(this);
+                const text = $toggle.text().toLowerCase();
+                if (text.includes('help') || text.includes('user')) {
+                    const $menu = $toggle.next('.dropdown-menu');
+                    if ($menu.length) {
+                        helpDropdown = $menu;
+                        return false; // break
+                    }
+                }
+            });
+        }
+        
+        if (helpDropdown && helpDropdown.length) {
+            console.log('Found help menu, customizing...');
+            
+            // Clear all existing items
+            helpDropdown.empty();
+            
+            // Add "About MGH" item
+            const aboutItem = $(`
+                <li>
+                    <a href="#" class="dropdown-item" id="mg-about-mgh">
+                        <span>About MGH</span>
+                    </a>
+                </li>
+            `);
+            aboutItem.find('a').on('click', function(e) {
+                e.preventDefault();
+                frappe.msgprint({
+                    title: __('About MGH'),
+                    message: __('MGH Custom Application'),
+                    indicator: 'blue'
+                });
+            });
+            helpDropdown.append(aboutItem);
+            
+            // Add "MGH Support" item
+            const supportItem = $(`
+                <li>
+                    <a href="/support" class="dropdown-item" id="mg-support" target="_blank">
+                        <span>MGH Support</span>
+                    </a>
+                </li>
+            `);
+            helpDropdown.append(supportItem);
+            
+            console.log('Help menu customized successfully');
+            return true;
+        }
+        
+        return false;
+    };
+    
+    // Strategy 2: Override Frappe's help menu initialization
+    if (typeof frappe.ui.toolbar !== 'undefined') {
+        // Override add_help_menu_item if it exists
+        const originalAddHelpItem = frappe.ui.toolbar.add_help_menu_item;
+        if (originalAddHelpItem) {
+            frappe.ui.toolbar.add_help_menu_item = function() {
+                // Don't add default items, we'll add our own
+            };
+        }
+        
+        // Clear help menu if method exists
+        if (frappe.ui.toolbar.clear_help) {
+            try {
+                frappe.ui.toolbar.clear_help();
+            } catch (e) {
+                console.log('Could not clear help via API:', e);
+            }
+        }
+    }
+    
+    // Try to customize immediately
+    if (!customizeMenuItems()) {
+        // Retry after delays
+        setTimeout(customizeMenuItems, 500);
+        setTimeout(customizeMenuItems, 1000);
+        setTimeout(customizeMenuItems, 2000);
+    }
+    
+    // Use MutationObserver to watch for menu changes
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(function(mutations) {
+            customizeMenuItems();
+        });
+        
+        // Observe navbar for changes
+        const navbar = document.querySelector('.navbar, .desktop-menu');
+        if (navbar) {
+            observer.observe(navbar, {
+                childList: true,
+                subtree: true
+            });
+        }
+    }
 };
 
 // Utility Functions
@@ -171,76 +302,6 @@ mg.utils = {
     }
 };
 
-// Customize Help Menu
-mg.customizeHelpMenu = function() {
-    // Wait for Frappe toolbar to be ready
-    if (typeof frappe.ui.toolbar !== 'undefined' && frappe.ui.toolbar.clear_help) {
-        try {
-            // Clear existing help menu (removes all items including keyboard shortcuts)
-            frappe.ui.toolbar.clear_help();
-            
-            // Add custom help menu items
-            if (frappe.ui.toolbar.add_help_menu_item) {
-                // Add "About MGH" menu item
-                frappe.ui.toolbar.add_help_menu_item(__('About MGH'), function() {
-                    frappe.msgprint({
-                        title: __('About MGH'),
-                        message: __('MGH Custom Application'),
-                        indicator: 'blue'
-                    });
-                });
-                
-                // Add "MGH Support" menu item
-                frappe.ui.toolbar.add_help_menu_item(__('MGH Support'), function() {
-                    // Open support page - update URL as needed
-                    window.open('/support', '_blank');
-                });
-            }
-        } catch (e) {
-            console.log('Help menu customization error:', e);
-            // Fallback: Use DOM manipulation if API not available
-            setTimeout(mg.customizeHelpMenuDOM, 500);
-        }
-    } else {
-        // Retry if toolbar not ready yet
-        setTimeout(mg.customizeHelpMenu, 500);
-    }
-};
-
-// Fallback DOM-based help menu customization
-mg.customizeHelpMenuDOM = function() {
-    // Find help menu dropdown
-    const helpMenu = $('.help-menu, .dropdown-help, [data-toggle="dropdown"]').filter(function() {
-        return $(this).text().toLowerCase().includes('help');
-    });
-    
-    if (helpMenu.length) {
-        // Remove keyboard shortcuts and other items
-        helpMenu.find('.dropdown-menu, .help-menu-item').each(function() {
-            const $item = $(this);
-            const text = $item.text().toLowerCase();
-            
-            // Remove keyboard shortcuts
-            if (text.includes('keyboard') || text.includes('shortcut') || text.includes('⌘') || text.includes('cmd')) {
-                $item.remove();
-            }
-            
-            // Customize About
-            if (text.includes('about') && !text.includes('mgh')) {
-                $item.find('a').text('About MGH');
-            }
-            
-            // Customize Support
-            if (text.includes('support') && !text.includes('mgh')) {
-                const $link = $item.find('a');
-                $link.text('MGH Support');
-                $link.attr('href', '/support');
-                $link.attr('target', '_blank');
-            }
-        });
-    }
-};
-
 // Custom Frappe Hooks
 mg.hooks = {
     // Hook into form refresh
@@ -271,19 +332,13 @@ mg.hooks = {
 // Initialize when app is ready
 $(document).on('app_ready', function() {
     mg.init();
-    
-    // Customize help menu after a short delay to ensure toolbar is ready
-    setTimeout(function() {
-        mg.customizeHelpMenu();
-    }, 1000);
 });
 
-// Also try to customize help menu when toolbar is clicked
-$(document).on('click', '.help-menu, .dropdown-help, [data-toggle="dropdown"]', function() {
+// Also customize when menu is opened/clicked
+$(document).on('click', '.navbar [data-toggle="dropdown"], .dropdown-toggle', function() {
     setTimeout(function() {
         mg.customizeHelpMenu();
-        mg.customizeHelpMenuDOM();
-    }, 100);
+    }, 50);
 });
 
 // Hook into route changes
@@ -296,6 +351,23 @@ frappe.router.on('change', function() {
         mg.customizeHelpMenu();
     }, 100);
 });
+
+// Watch for DOM changes and re-customize
+if (typeof MutationObserver !== 'undefined') {
+    const menuObserver = new MutationObserver(function() {
+        mg.customizeHelpMenu();
+    });
+    
+    // Observe body for navbar changes
+    const body = document.body;
+    if (body) {
+        menuObserver.observe(body, {
+            childList: true,
+            subtree: true,
+            attributes: false
+        });
+    }
+}
 
 // Hook into form refresh events
 if (typeof frappe.ui.form !== 'undefined') {
