@@ -1,7 +1,7 @@
 /* MG Custom Theme for Frappe - Premium Extensions */
 
-/* Import Google Font - Inter */
 /* Import Google Font - Inter & Cinzel (Ancient look) */
+/* Using display=swap for better performance */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;700&display=swap');
 
 :root {
@@ -37,7 +37,9 @@
 }
 
 body {
-    background: url('../images/angkor_wat_bg.jpg') no-repeat center center fixed !important;
+    /* Use absolute path for Frappe asset structure */
+    background: url('/assets/mg/images/angkor_wat_bg.jpg') no-repeat center center fixed;
+    background-color: var(--background-color);
     background-size: cover !important;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
     color: var(--text-color) !important;
@@ -238,4 +240,312 @@ body::before {
 /* Status Badges */
 .indicator {
     font-weight: 500;
+    border-radius: var(--border-radius-sm) !important;
+    padding: 0.25rem 0.5rem !important;
+}
+
+/* --- Modals & Dialogs --- */
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    border-radius: var(--border-radius-lg) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color) !important;
+    padding: 1.25rem 1.5rem !important;
+}
+
+.modal-title {
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    font-family: 'Cinzel', serif !important;
+}
+
+.modal-body {
+    padding: 1.5rem !important;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color) !important;
+    padding: 1rem 1.5rem !important;
+}
+
+/* --- Dropdowns & Selects --- */
+.dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--border-radius) !important;
+    box-shadow: var(--shadow-md) !important;
+    padding: 0.5rem 0 !important;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem !important;
+    transition: var(--transition-base) !important;
+    color: var(--text-color) !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: var(--surface-hover) !important;
+    color: var(--primary-color) !important;
+}
+
+/* --- Data Tables --- */
+.table {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: var(--border-radius) !important;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: var(--surface-hover) !important;
+    border-bottom: 2px solid var(--border-color) !important;
+    font-weight: 600 !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1rem !important;
+}
+
+.table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.table tbody tr:hover {
+    background-color: var(--surface-hover) !important;
+}
+
+.table tbody td {
+    padding: 0.75rem 1rem !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* --- Alerts & Notifications --- */
+.alert {
+    border-radius: var(--border-radius) !important;
+    border: none !important;
+    padding: 1rem 1.25rem !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: #059669 !important;
+    border-left: 4px solid var(--success-color) !important;
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: #dc2626 !important;
+    border-left: 4px solid var(--danger-color) !important;
+}
+
+.alert-warning {
+    background-color: rgba(245, 158, 11, 0.1) !important;
+    color: #d97706 !important;
+    border-left: 4px solid var(--warning-color) !important;
+}
+
+.alert-info {
+    background-color: rgba(37, 99, 235, 0.1) !important;
+    color: var(--primary-color) !important;
+    border-left: 4px solid var(--primary-color) !important;
+}
+
+/* --- Tooltips --- */
+.tooltip {
+    font-size: 0.875rem !important;
+}
+
+.tooltip-inner {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: var(--border-radius-sm) !important;
+    padding: 0.5rem 0.75rem !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+/* --- Progress Bars --- */
+.progress {
+    height: 0.5rem !important;
+    border-radius: var(--border-radius) !important;
+    background-color: var(--surface-hover) !important;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+.progress-bar {
+    background-color: var(--primary-color) !important;
+    border-radius: var(--border-radius) !important;
+    transition: width 0.3s ease !important;
+}
+
+/* --- Checkboxes & Radio Buttons --- */
+.form-check-input {
+    border: 2px solid var(--border-color) !important;
+    border-radius: var(--border-radius-sm) !important;
+    transition: var(--transition-base) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+/* --- Tabs --- */
+.nav-tabs {
+    border-bottom: 2px solid var(--border-color) !important;
+}
+
+.nav-tabs .nav-link {
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+    color: var(--text-muted) !important;
+    padding: 0.75rem 1.25rem !important;
+    transition: var(--transition-base) !important;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+}
+
+.nav-tabs .nav-link:hover {
+    border-bottom-color: var(--border-color) !important;
+    color: var(--text-color) !important;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color) !important;
+    border-bottom-color: var(--primary-color) !important;
+    background-color: transparent !important;
+    font-weight: 600 !important;
+}
+
+/* --- Loading Spinners --- */
+.spinner-border {
+    border-color: var(--primary-color) !important;
+    border-right-color: transparent !important;
+}
+
+/* --- Badges --- */
+.badge {
+    padding: 0.35rem 0.65rem !important;
+    border-radius: var(--border-radius-sm) !important;
+    font-weight: 500 !important;
+    font-size: 0.75rem !important;
+}
+
+.badge-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.badge-success {
+    background-color: var(--success-color) !important;
+}
+
+.badge-danger {
+    background-color: var(--danger-color) !important;
+}
+
+.badge-warning {
+    background-color: var(--warning-color) !important;
+}
+
+/* --- Scrollbars (Webkit) --- */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--surface-hover);
+    border-radius: var(--border-radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: var(--border-radius-sm);
+    transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* --- Print Styles --- */
+@media print {
+    body {
+        background: white !important;
+    }
+    
+    body::before {
+        display: none !important;
+    }
+    
+    .navbar,
+    .layout-side-section {
+        display: none !important;
+    }
+}
+
+/* --- Responsive Enhancements --- */
+@media (max-width: 768px) {
+    .card,
+    .widget {
+        border-radius: var(--border-radius) !important;
+    }
+    
+    .btn {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.875rem !important;
+    }
+}
+
+/* --- Animation Classes --- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* --- Custom Utility Classes --- */
+.mg-shadow-sm {
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.mg-shadow-md {
+    box-shadow: var(--shadow-md) !important;
+}
+
+.mg-shadow-lg {
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.mg-rounded {
+    border-radius: var(--border-radius) !important;
+}
+
+.mg-rounded-lg {
+    border-radius: var(--border-radius-lg) !important;
+}
+
+/* --- Dark Mode Support (Future Enhancement) --- */
+@media (prefers-color-scheme: dark) {
+    /* Dark mode styles can be added here if needed */
 }
